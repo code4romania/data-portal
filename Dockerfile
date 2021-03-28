@@ -26,7 +26,9 @@ FROM ghcr.io/keitaroinc/ckan:2.9.2
 
 LABEL maintainer="Code4Romania <contact@code4.ro>"
 
-ENV CKAN__PLUGINS envvars image_view text_view recline_view datastore datapusher dataportaltheme
+ARG CKAN__PLUGINS
+
+ENV CKAN__PLUGINS ${CKAN__PLUGINS:-xloader envvars resource_proxy stats image_view text_view recline_graph_view webpage_view recline_view recline_map_view dataportaltheme datastore datapusher odata c3charts spatial_metadata spatial_query geo_view geojson_view tableau_view datarequests}
 
 # Switch to the root user
 USER root
