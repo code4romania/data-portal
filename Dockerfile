@@ -3,6 +3,9 @@
 ###################
 FROM ghcr.io/keitaroinc/ckan:2.9.2 as extbuild
 
+# Switch to the root user
+USER root
+
 # Locations and tags, please use specific tags or revisions
 ARG DATAPORTAL_GIT_USER
 ARG DATAPORTAL_GIT_BRANCH
@@ -10,9 +13,6 @@ ARG DATAPORTAL_GIT_BRANCH
 ENV DATAPORTAL_GIT_USER=${DATAPORTAL_GIT_USER:-code4romania}
 ENV DATAPORTAL_GIT_BRANCH=${DATAPORTAL_GIT_BRANCH:-master}
 ENV DATAPORTAL_GIT_URL=https://github.com/${DATAPORTAL_GIT_USER}/ckanext-dataportaltheme@${DATAPORTAL_GIT_BRANCH}
-
-# Switch to the root user
-USER root
 
 # Fetch and build the custom CKAN extensions
 RUN pip wheel --wheel-dir=/wheels git+${DATAPORTAL_GIT_URL}#egg=ckanext-dataportaltheme
