@@ -7,8 +7,8 @@ Data Portal - the open data community
 1. Create `.*env` files
 
    ```shell
-   cp .ckan-env.dist ckan-env
-   cp .env.dist env
+   cp .ckan-env.dist .ckan-env
+   cp .env.dist .env
    ```
 
 2. Start the project
