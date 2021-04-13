@@ -29,7 +29,7 @@ FROM ghcr.io/keitaroinc/ckan:2.9.2-focal
 
 LABEL maintainer="Code4Romania <contact@code4.ro>"
 
-ARG CKAN__PLUGINS
+ENV CKAN__PLUGINS envvars image_view text_view recline_view datastore xloader resource_proxy stats recline_graph_view webpage_view recline_map_view geo_view geojson_view spatial_metadata spatial_query
 
 # Switch to the root user
 USER root
