@@ -12,8 +12,6 @@ services:
     build:
       context: .
       dockerfile: docker/ckan/Dockerfile
-      args:
-        - CKAN__PLUGINS
     networks:
       - frontend
       - backend
@@ -35,7 +33,6 @@ services:
       - DS_RO_PASS=${DATASTORE_READONLY_PASSWORD}
     volumes:
       - ckan_data:/srv/app/data
-      - ./docker/ckan/docker-entrypoint.d:/srv/app/docker-entrypoint.d
 
   db:
     container_name: db
