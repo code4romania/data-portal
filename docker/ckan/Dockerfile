@@ -12,15 +12,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 # Fetch and build the custom CKAN extensions
 RUN pip wheel --wheel-dir=/wheels git+https://github.com/ckan/ckanext-xloader#egg=ckanext-xloader
 RUN pip wheel --wheel-dir=/wheels git+https://github.com/ckan/ckanext-geoview#egg=ckanext-geoview
+# TODO: Change the URL once this PR is merged https://github.com/ckan/ckanext-spatial/pull/249
+RUN pip wheel --wheel-dir=/wheels git+https://github.com/smellman/ckanext-spatial@dev-py3#egg=ckanext-spatial
 
-RUN pip wheel --wheel-dir=/wheels git+https://github.com/smellman/ckanext-spatial.git@dev-py3#egg=ckanext-spatial
-# RUN pip wheel --wheel-dir=/wheels git+https://github.com/ViderumGlobal/ckanext-c3charts#egg=ckanext-c3charts
+# Not fully compatible with ckan2.9 and python3 (they need more testing)
+RUN pip wheel --wheel-dir=/wheels git+https://github.com/ViderumGlobal/ckanext-c3charts#egg=ckanext-c3charts
+RUN pip wheel --wheel-dir=/wheels git+https://github.com/aramboi/ckanext-odata#egg=ckanext-odata
+RUN pip wheel --wheel-dir=/wheels git+https://github.com/aramboi/ckanext-tableauview#egg=ckanext-tableauview
+# RUN pip wheel --wheel-dir=/wheels git+https://github.com/aramboi/ckanext-datarequests#egg=ckanext-datarequests
 
-# RUN pip wheel --wheel-dir=/wheels git+https://github.com/OpenGov-OpenData/ckanext-odata#egg=ckanext-odata
-# RUN pip wheel --wheel-dir=/wheels git+https://github.com/costibleotu/ckanext-datarequests#egg=ckanext-datarequests
-# RUN pip wheel --wheel-dir=/wheels git+https://github.com/geosolutions-it/ckanext-tableauview#egg=ckanext-tableauview
-
-# RUN pip wheel --wheel-dir=/wheels git+https://github.com/tudoramariei/ckanext-dataportaltheme.git@testing123#egg=ckanext-dataportaltheme
+# Code4 ckan extensions
+RUN pip wheel --wheel-dir=/wheels git+https://github.com/code4romania/ckanext-dataportaltheme#egg=ckanext-dataportaltheme
 
 ############
 ### MAIN ###
@@ -29,7 +31,7 @@ FROM ghcr.io/keitaroinc/ckan:2.9.2-focal
 
 LABEL maintainer="Code4Romania <contact@code4.ro>"
 
-ENV CKAN__PLUGINS envvars image_view text_view recline_view datastore xloader resource_proxy stats recline_graph_view webpage_view recline_map_view geo_view geojson_view spatial_metadata spatial_query
+ENV CKAN__PLUGINS envvars image_view text_view recline_view datastore xloader resource_proxy stats recline_graph_view webpage_view recline_map_view geo_view geojson_view spatial_metadata spatial_query c3charts odata tableau_view dataportaltheme
 
 # Switch to the root user
 USER root
@@ -37,7 +39,15 @@ USER root
 COPY --from=extbuild /wheels /srv/app/ext_wheels
 
 # Install custom extensions
-RUN pip install --no-index --find-links=/srv/app/ext_wheels ckanext-xloader ckanext-geoview ckanext-spatial
+RUN pip install --no-index --find-links=/srv/app/ext_wheels \
+      ckanext-xloader \
+      ckanext-geoview \
+      ckanext-spatial \
+      ckanext-c3charts \
+      ckanext-odata \
+      ckanext-tableauview \
+      # ckanext-datarequests \
+      ckanext-dataportaltheme
 
 # Install extensions requirements
 RUN pip install -r https://raw.githubusercontent.com/ckan/ckanext-xloader/master/requirements.txt
