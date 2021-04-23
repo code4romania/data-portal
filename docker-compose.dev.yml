@@ -3,6 +3,5 @@ version: "3.7"
 services:
   ckan:
     volumes:
-      - ./docker/ckan/docker-entrypoint.d:/srv/app/docker-entrypoint.d
       - ../ckanext-dataportaltheme:/opt/dataportaltheme
       - ../ckanext-datarequests:/opt/datarequests
