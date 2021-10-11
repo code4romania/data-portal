@@ -24,9 +24,9 @@ WORKDIR ${SRC_DIR}
 
 RUN rm -rf ${CKAN_DIR}
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
-COPY ./docker/ckan/patches ${SRC_DIR}/patches
-COPY ./docker/ckan/scripts/apply_patches.sh ${SRC_DIR}/apply_patches.sh
-RUN ${SRC_DIR}/apply_patches.sh
+# COPY ./docker/ckan/patches ${SRC_DIR}/patches
+# COPY ./docker/ckan/scripts/apply_patches.sh ${SRC_DIR}/apply_patches.sh
+# RUN ${SRC_DIR}/apply_patches.sh
 RUN rm -rf ${CKAN_DIR}/.git
 RUN pip wheel --wheel-dir=/wheels -r ${CKAN_DIR}/requirements.txt
 # END PATCH
